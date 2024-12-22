@@ -19,34 +19,24 @@ public class playerController : MonoBehaviour
 
     public AudioSource audioSource;
     public AudioClip clip;
-
+    public Animator walkingDown;
     public void Start()
     {
         //Gets Components at the start of the script
         audioSource = GetComponent<AudioSource>();
+        walkingDown.enabled = false;
     }
     void Update()
     {
-        if (!pauseMenu.isPaused)
-        {
-            float moveX = Input.GetAxisRaw("Horizontal");
-            float moveY = Input.GetAxisRaw("Vertical");
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                Fire();
-            }
-            moveDirection = new Vector2(moveX, moveY).normalized;
-            mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        }
+        playerInput();
     }
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
 
-        Vector2 aimDirection = mousePosition - rb.position;
-        float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;
-        rb.rotation = aimAngle;
+        //Vector2 aimDirection = mousePosition - rb.position;
+        //float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;
+        //rb.rotation = aimAngle;
     }
     
     public void Fire()
@@ -73,5 +63,20 @@ public class playerController : MonoBehaviour
             //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
         
+    }
+    private void playerInput()
+    {
+        float moveX = Input.GetAxisRaw("Horizontal");
+        float moveY = Input.GetAxisRaw("Vertical");
+        
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Fire();
+        }
+        
+
+        moveDirection = new Vector2(moveX, moveY).normalized;
+        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 }
