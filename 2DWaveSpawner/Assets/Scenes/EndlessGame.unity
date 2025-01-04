@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1340,7 +1339,7 @@ Camera:
   far clip plane: 1000
   field of view: 95.06599
   orthographic: 1
-  orthographic size: 11.987604
+  orthographic size: 12
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
@@ -1541,6 +1540,7 @@ MonoBehaviour:
   fireForce: 20
   audioSource: {fileID: 719102385}
   clip: {fileID: 8300000, guid: b960c061d75d79941908a65768167012, type: 3}
+  walkingDown: {fileID: 0}
 --- !u!82 &719102385
 AudioSource:
   m_ObjectHideFlags: 0
