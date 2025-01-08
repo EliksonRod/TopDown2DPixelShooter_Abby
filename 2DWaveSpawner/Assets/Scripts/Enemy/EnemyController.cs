@@ -120,11 +120,9 @@ public class EnemyController : MonoBehaviour
 
     void OnDestroy()
     {
-        //if (GameObject.FindGameObjectWithTag("WaveSpawner") != null)
-        //{
-       //     GameObject.FindGameObjectWithTag("WaveSpawner").GetComponent<WaveSpawner>().spawnedEnemies.Remove(gameObject);
-       // }
         gameController.AddScore(scoreAddAmount);
+
+        spawn.enemiesRemaining--;
         spawn.enemiesKilled++;
 
     }
