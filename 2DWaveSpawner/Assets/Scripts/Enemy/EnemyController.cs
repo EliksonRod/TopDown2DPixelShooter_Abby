@@ -1,61 +1,43 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField]
-    private float speed;
+    [SerializeField] private float health, maxHealth = 3;
+    [SerializeField] private float speed = 1.5f;
 
-    [SerializeField]
-    private float rotationSpeed;
-
-    [SerializeField]
-    private float _playerAwarenessDistance;
-
-    [SerializeField]
-    private float health, maxHealth = 3;
-
-    private Rigidbody2D _rigidbody;
-    private Vector2 _targetDirection;
-    public bool AwareOfPlayer;
-    public Vector2 DirectionToPlayer;
-
-    private Transform player;
+    private GameObject player;
 
     GameController gameController;
     private float scoreAddAmount = 10;
     InfiniteWaves spawn;
 
+    //[SerializeField] Transform target;
+
+    NavMeshAgent agent;
+
     private void Start()
     {
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        player = GameObject.FindGameObjectWithTag("Player");
         spawn = gameController.GetComponentInChildren<InfiniteWaves>();
         health = maxHealth;
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
     }
-
-    private void Awake()
+    private void Update()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        agent.SetDestination(player.transform.position);
     }
 
-    // Update is called once per frame
-    void Update()
+    /*void FixedUpdate()
     {
-        Vector2 enemyToPlayerVector = player.position - transform.position;
-        DirectionToPlayer = enemyToPlayerVector.normalized;
-
-        if (enemyToPlayerVector.magnitude <= _playerAwarenessDistance)
-        {
-            AwareOfPlayer = true;
-        }
-        else
-        {
-            AwareOfPlayer = false;
-        }
-    }
-
+        transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+    }*/
     public void TakeDamage(int damageAmount)
     {
         health -= damageAmount;//3->2->1->0=Enemy has died
@@ -65,51 +47,6 @@ public class EnemyController : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    private void FixedUpdate()
-    {
-        UpdateTargetDIrection();
-        RotateTowardsTarget();
-        SetVelocity();
-    }
-
-    private void UpdateTargetDIrection()
-    {
-        if (AwareOfPlayer == true)
-        {
-            _targetDirection = DirectionToPlayer;
-        }
-        else
-        {
-            _targetDirection = Vector2.zero;
-        }
-    }
-
-    private void RotateTowardsTarget()
-    {
-        if (_targetDirection == Vector2.zero)
-        {
-            return;
-        }
-
-        Quaternion targetRotation = Quaternion.LookRotation(transform.forward, _targetDirection);
-        Quaternion rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-        _rigidbody.SetRotation(rotation);
-    }
-
-    private void SetVelocity()
-    {
-        if (_targetDirection == Vector2.zero)
-        {
-            _rigidbody.velocity = Vector2.zero;
-        }
-        else
-        {
-            _rigidbody.velocity = transform.up * speed;
-        }
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.gameObject.tag == "Bullet")
@@ -120,6 +57,8 @@ public class EnemyController : MonoBehaviour
 
     void OnDestroy()
     {
+        ScoreManager.instance.AddPoint();
+
         gameController.AddScore(scoreAddAmount);
 
         spawn.enemiesRemaining--;

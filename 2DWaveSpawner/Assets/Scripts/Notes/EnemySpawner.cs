@@ -1,4 +1,4 @@
-/*using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -7,8 +7,6 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField]
     private GameObject enemyPrefab;
-    //[SerializeField]
-    //private GameObject enemy2Prefab;
 
     [SerializeField]
     private float spawnRate = 1.5f;
@@ -19,14 +17,10 @@ public class EnemySpawner : MonoBehaviour
 
     bool waveIsDone = true;
 
-    //[SerializeField]
-    //private float enemy2Interval = 10f;
-
     // Start is called before the first frame update
     void Start()
     {
-        //StartCoroutine(spawnEnemy(spawnRate, enemyPrefab));
-        //StartCoroutine(spawnEnemy(enemy2Interval, enemy2Prefab));
+       StartCoroutine(spawnEnemy(spawnRate, enemyPrefab));
     }
 
     private IEnumerator spawnEnemy(float interval, GameObject enemy)
@@ -69,10 +63,5 @@ public class EnemySpawner : MonoBehaviour
                 enemyCount += 4;
             }
         }
-        
-
-
     }
-}*/
-
-
+}

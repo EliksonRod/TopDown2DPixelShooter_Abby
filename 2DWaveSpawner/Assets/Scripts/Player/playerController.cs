@@ -4,56 +4,66 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public class playerController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public Rigidbody2D rb;
-    
+
     public GameObject bulletPrefab;
-    public Transform firePoint;
-    public float fireForce = 20f;
+    public GameObject[] bulletTypes;
+    public Transform weaponBarrel;
+    public float bulletVelocity = 20f;
 
-    //WASD and Mouse tracking
-    Vector2 moveDirection;
-    Vector2 mousePosition;
+    Vector2 movement;
+    public Animator animator;
 
-    public AudioSource audioSource;
-    public AudioClip clip;
-    public Animator walkingDown;
-    public void Start()
+    private void Update()
     {
-        //Gets Components at the start of the script
-        audioSource = GetComponent<AudioSource>();
-        walkingDown.enabled = false;
+        if (Input.GetMouseButtonDown(0))
+        {
+            FireWeapon();
+        }
     }
-    void Update()
+
+    void FixedUpdate()
     {
         playerInput();
     }
-    private void FixedUpdate()
+    private void playerInput()
     {
-        rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
 
-        //Vector2 aimDirection = mousePosition - rb.position;
-        //float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;
-        //rb.rotation = aimAngle;
+        //rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + movement.normalized * moveSpeed * Time.fixedDeltaTime);
+
+        animator.SetFloat("Horizontal", movement.x);
+        animator.SetFloat("Vertical", movement.y);
+        animator.SetFloat("Speed", movement.sqrMagnitude);
+
+        if (movement != Vector2.zero)
+        {
+            animator.SetFloat("LastHorizontal",movement.x);
+            animator.SetFloat("LastVertical", movement.y);
+        }
+        
     }
-    
-    public void Fire()
+    public void FireWeapon()
     {
         //shoots prefab, tracks position and rotation of the tip of the weapon
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        GameObject bullet = Instantiate(bulletPrefab, weaponBarrel.position, weaponBarrel.rotation);
 
         //the speed the bullet travels
-        bullet.GetComponent<Rigidbody2D>().AddForce(firePoint.up * fireForce, ForceMode2D.Impulse);
+        bullet.GetComponent<Rigidbody2D>().AddForce(weaponBarrel.up * bulletVelocity, ForceMode2D.Impulse);
 
         //Plays audio when called
-        audioSource.clip = clip;
-        audioSource.Play();
+        //audioSource.clip = clip;
+        //audioSource.Play();
     }
+
     public void OnCollisionEnter2D(Collision2D collision2D)
     {
-        if(collision2D.gameObject.tag == "Enemy")
+        if (collision2D.gameObject.tag == "Enemy")
         {
             Destroy(gameObject);
 
@@ -62,21 +72,6 @@ public class playerController : MonoBehaviour
             //Reloads Current Scene
             //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-        
-    }
-    private void playerInput()
-    {
-        float moveX = Input.GetAxisRaw("Horizontal");
-        float moveY = Input.GetAxisRaw("Vertical");
-        
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            Fire();
-        }
-        
-
-        moveDirection = new Vector2(moveX, moveY).normalized;
-        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 }

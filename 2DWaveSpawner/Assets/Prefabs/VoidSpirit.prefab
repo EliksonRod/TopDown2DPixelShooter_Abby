@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 2135160072416584287}
   - component: {fileID: 6030039467379137860}
   - component: {fileID: 6536058442117672461}
-  - component: {fileID: 3828305282573718151}
+  - component: {fileID: 9028355634206028845}
+  - component: {fileID: 6758247726204577731}
   m_Layer: 0
   m_Name: VoidSpirit
   m_TagString: Enemy
@@ -146,7 +147,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.030000001, y: -0.027886763}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -157,9 +158,9 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.95, y: 0.82782984}
   m_EdgeRadius: 0
---- !u!114 &3828305282573718151
+--- !u!114 &9028355634206028845
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,13 +169,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 7595204073082450805}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0b74a397b1ba0f46ab1152e0c7546e8, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f4ab3144f23a1f4fb217bd3512a0107, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  rotationSpeed: 1000
-  _playerAwarenessDistance: 1000
-  health: 3
+  health: 2
   maxHealth: 3
-  AwareOfPlayer: 0
-  DirectionToPlayer: {x: 0, y: 0}
+  speed: 1.5
+--- !u!195 &6758247726204577731
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7595204073082450805}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
