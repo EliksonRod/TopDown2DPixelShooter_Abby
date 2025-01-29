@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, weaponBarrel.position, weaponBarrel.rotation);
 
         //the speed the bullet travels
-        bullet.GetComponent<Rigidbody2D>().AddForce(weaponBarrel.up * bulletVelocity, ForceMode2D.Impulse);
+        bullet.GetComponent<Rigidbody2D>().AddForce(weaponBarrel * bulletVelocity, ForceMode2D.Impulse);
 
         //Plays audio when called
         //audioSource.clip = clip;
