@@ -10,9 +10,7 @@ public class player2D_controller : MonoBehaviour
     public Rigidbody2D rb;
 
     public GameObject bulletPrefab;
-    public GameObject[] bulletTypes;
     public Transform weaponBarrel;
-    public float bulletVelocity = 20f;
 
     Vector2 movement;
     public Animator animator;
@@ -32,19 +30,15 @@ public class player2D_controller : MonoBehaviour
     private void playerInput()
     {
         movement.x = Input.GetAxisRaw("Horizontal");
-        //movement.y = Input.GetAxisRaw("Vertical");
 
-        //rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
         rb.MovePosition(rb.position + movement.normalized * moveSpeed * Time.fixedDeltaTime);
 
         animator.SetFloat("Horizontal", movement.x);
-        //animator.SetFloat("Vertical", movement.y);
         animator.SetFloat("Speed", movement.sqrMagnitude);
 
         if (movement != Vector2.zero)
         {
             animator.SetFloat("LastHorizontal", movement.x);
-            //animator.SetFloat("LastVertical", movement.y);
         }
 
     }
@@ -52,9 +46,6 @@ public class player2D_controller : MonoBehaviour
     {
         //shoots prefab, tracks position and rotation of the tip of the weapon
         GameObject bullet = Instantiate(bulletPrefab, weaponBarrel.position, weaponBarrel.rotation);
-
-        //the speed the bullet travels
-        bullet.GetComponent<Rigidbody2D>().AddForce(weaponBarrel.up * bulletVelocity, ForceMode2D.Impulse);
 
         //Plays audio when called
         //audioSource.clip = clip;
