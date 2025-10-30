@@ -55,11 +55,11 @@ public class Bullet : MonoBehaviour
 
     private void normalBulletVelocity()
     {
-        rb.velocity = transform.right * normalBulletSpeed;
+        rb.linearVelocity = transform.right * normalBulletSpeed;
     }
     private void shotgunBulletVelocity()
     {
-        rb.velocity = transform.right * normalBulletSpeed;
+        rb.linearVelocity = transform.right * normalBulletSpeed;
     }
 
     private void SetRbStats()
